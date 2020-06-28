@@ -2,10 +2,11 @@ FROM drupal:8.9.1-fpm
 
 LABEL image.maintainer="lktslionel<lktslionel@oui.sncf>"
 
+ARG   PROJECT_NAME
+ARG   APP_NAME=$PROJECT_NAME
 
 ARG   CONTAINER_UID=1000
 ARG   CONTAINER_GID=1000
-ARG   APP_NAME="cms-server"
 
 ARG DUMB_INIT_PKG_VERSION="1.2.2"
 
