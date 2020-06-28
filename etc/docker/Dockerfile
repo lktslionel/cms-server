@@ -48,7 +48,7 @@ RUN echo "Ensure app core directories are present"\
 
 
 # Install dumb-init
-RUN curl --output /usr/local/bin/dumb-init \
+RUN curl --location --output /usr/local/bin/dumb-init \
       https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_PKG_VERSION}/dumb-init_${DUMB_INIT_PKG_VERSION}_amd64
 RUN chmod +x /usr/local/bin/dumb-init
 
@@ -83,5 +83,5 @@ RUN chmod +x ${X_APP_BINS_DIR}/run.sh
 
 WORKDIR ${X_APP_HOME_DIR}
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["bash", "-c", "${X_BINS_DIR}/entrypoint.sh ${X_APP_BINS_DIR}/run.sh"]
