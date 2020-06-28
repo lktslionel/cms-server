@@ -14,32 +14,34 @@ DOCKER_REPO_NAME = REPO_NAME
 
 DOCKER_IMAGE_REPO_URL = "$(DOCKER_REGISTRY)/$(DOCKER_ORG_NAME)/$(DOCKER_REPO_NAME)"
 
+ENVS = 	X_PROJECT_DIR="$(PROJECT_DIR)"\
+		X_PROJECT_NAME="$(PROJECT_NAME)"
 
 # TASKS
 
 .PHONY: assemble
-assemble:
-	tasks/assemble.sh
+assemble: 
+	$(ENVS) tasks/assemble.sh
 
 
 .PHONY: package
 package:
-	tasks/package.sh
+	$(ENVS) tasks/package.sh
 
 
 .PHONY: tag
 tag:
-	tasks/tag.sh
+	$(ENVS) tasks/tag.sh
 
 
 .PHONY: publish
 publish:
-	tasks/publish.sh
+	$(ENVS) tasks/publish.sh
 
 
 .PHONY: run
 run:
-	tasks/run.sh
+	$(ENVS) tasks/run.sh
 
 .PHONY = help
 help: 
