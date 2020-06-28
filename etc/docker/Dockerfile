@@ -3,9 +3,11 @@ FROM drupal:8.9.1-fpm
 LABEL image.maintainer="lktslionel<lktslionel@oui.sncf>"
 
 
-ARG CONTAINER_UID=1000
-ARG CONTAINER_GID=1000
-ARG PROJECT_NAME="cms-server"
+ARG   CONTAINER_UID=1000
+ARG   CONTAINER_GID=1000
+ARG   APP_NAME="cms-server"
+
+ARG DUMB_INIT_PKG_VERSION="1.2.2"
 
 ENV   X_PROJECT_NAME="$PROJECT_NAME"\
       X_DIR="/opt/x"\
@@ -14,15 +16,14 @@ ENV   X_PROJECT_NAME="$PROJECT_NAME"\
       # APP 
       X_APP_UID="$CONTAINER_UID"\
       X_APP_GID="$CONTAINER_GID"\
-      X_APP_NAME="$PROJECT_NAME"\
+      X_APP_NAME="$APP_NAME"\
       X_APP_HOME_DIR="/home/$X_APP_NAME"\
       X_APP_CONFIG_DIR="$X_APP_HOME/config"\
       X_APP_BINS_DIR="$X_APP_HOME/bin"\
       # OVERRIDES
       PATH="$X_APP_BINS_DIR:$X_BINS_DIR:$PATH"
 
-LABEL x:project:name="$X_PROJECT_NAME" \
-      x:app:name="$X_PROJECT_NAME"
+LABEL x:app:name="$X_PROJECT_NAME"
 
 
 # SETUP
@@ -42,6 +43,11 @@ RUN echo "Ensure app core directories are present"\
                   $X_APP_HOME_DIR\
                   $X_APP_CONFIG_DIR\
                   $X_APP_BINS_DIR
+
+# Install dumb-init
+RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_PKG_VERSION}/dumb-init_${DUMB_INIT_PKG_VERSION}_amd64
+RUN chmod +x /usr/local/bin/dumb-init
+
 
 COPY etc/docker/x/* $X_DIR/
 RUN chmod -R +x $X_DIR/
@@ -71,8 +77,5 @@ RUN chmod +x $X_APP_BINS_DIR/run.sh
 
 WORKDIR $X_APP_HOME_DIR
 
-ENTRYPOINT [ "$X_BINS_DIR/entrypoint.sh" ]
-
-CMD "$X_BINS_DIR/run.sh"
-
-
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["bash", "-c", "$X_BINS_DIR/entrypoint.sh $X_APP_BINS_DIR/run.sh"]
