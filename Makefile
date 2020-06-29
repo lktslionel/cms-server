@@ -29,8 +29,8 @@ package:
 	$(ENVS) tasks/package.sh
 
 
-.PHONY: tag
-tag:
+.PHONY: release
+release:
 	$(ENVS) tasks/tag.sh
 
 
@@ -47,6 +47,6 @@ run:
 help: 
 	@echo "assemble	: build, test code"
 	@echo "package		: create a package bundle as a zip file"
-	@echo "tag		: tag the package with a given version"	
+	@echo "Release		: create a new release from tag"	
 	@echo "publish		: publish a release to a artificat repository"	
 	

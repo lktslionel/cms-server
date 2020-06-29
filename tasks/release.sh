@@ -4,6 +4,6 @@ set -e
 
 source etc/docker/x/extras/addons.sh
 
-Step "Tag"
+Step "Release"
 
 Done

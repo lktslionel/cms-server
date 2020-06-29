@@ -21,6 +21,7 @@ ENV   X_APP_GID="${CONTAINER_GID}"
 ENV   X_APP_NAME="${APP_NAME}"
 ENV   X_APP_HOME_DIR="/home/${X_APP_NAME}"
 ENV   X_APP_CONFIG_DIR="${X_APP_HOME}/config"
+ENV   X_APP_SOURCE_DIR="${X_APP_HOME}/source"
 ENV   X_APP_BINS_DIR="${X_APP_HOME}/bin"
       
 ENV   PATH="${X_APP_BINS_DIR}:${X_BINS_DIR}:${PATH}"
@@ -44,6 +45,7 @@ RUN echo "Ensure app core directories are present"\
                   ${X_XTRS_DIR}\
                   ${X_APP_HOME_DIR}\
                   ${X_APP_CONFIG_DIR}\
+                  ${X_APP_SOURCE_DIR}\
                   ${X_APP_BINS_DIR}
 
 
